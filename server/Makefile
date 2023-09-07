@@ -1,7 +1,7 @@
 all: consolechat
 
 consolechat: main.o Chat.o Message.o User.o Connect.o
-	g++ main.o Chat.o Message.o User.o Connect.o -o consolechat
+	g++ -pthread main.o Chat.o Message.o User.o Connect.o -o consolechat
 main.o: main.cpp
 	g++ -c -pthread main.cpp
 Chat.o: Chat.cpp

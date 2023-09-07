@@ -6,7 +6,7 @@
 
 
 #define MESSAGE_LENGTH 1024 // Максимальный размер буфера для данных
-#define PORT 700 // Будем использовать этот номер порта
+#define PORT 35000 // Будем использовать этот номер порта
 #define PORT2 30000
 
  class ConnectTCP
