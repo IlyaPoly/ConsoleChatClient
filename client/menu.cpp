@@ -43,7 +43,12 @@ void mainMenu(const int& connection, bool& in)
 	default:
 		std::cout << "Unknown command!" << std::endl;
 	}
+	write(connection, message, sizeof(message));
+	read(connection, message, sizeof(message));
+	if (act == '2' && message[0] == '1')
+	in = true;
 }
+
 void signIn(char* message)
 {
 	char buf[MESSAGE_LENGTH];
