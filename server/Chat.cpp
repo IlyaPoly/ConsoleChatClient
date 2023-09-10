@@ -97,7 +97,7 @@ void Chat::signIn(const char* data, char* ans, std::shared_ptr<User>& selectedUs
 	else ans = "Wrong login/pass!";
 }
 
-void Chat::writeMessage(const char* data, char& ans, std::shared_ptr<User>& selectedUser_)
+void Chat::writeMessage(const char* data, char* ans, std::shared_ptr<User>& selectedUser_)
 {
 	std::string mess[3] = {};
 	messToParam(mess, data);
@@ -114,7 +114,7 @@ void Chat::writeMessage(const char* data, char& ans, std::shared_ptr<User>& sele
 	if (mess[0] != selectedUser_->getLogin() && (find || mess[0] == "all"))
 	{
 		messages_.push_back(Message(mess[0], selectedUser_->getLogin(), mess[1], selectedUser_->getName()));
-		ans = '1';
+		ans[0] = '1';
 	}
 	else ans = "Recipient is not found!";	
 }
