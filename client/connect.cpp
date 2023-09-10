@@ -2,8 +2,7 @@
 int connect()
 {
 	int socket_file_descriptor, connection;
-	struct sockaddr_in serveraddress, client;
-	char message[MESSAGE_LENGTH];
+	struct sockaddr_in serveraddress;
     socket_file_descriptor = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_file_descriptor == -1) {
         std::cout << "Creation of Socket failed!" << std::endl;

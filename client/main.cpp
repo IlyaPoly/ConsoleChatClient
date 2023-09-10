@@ -1,6 +1,8 @@
 #include "connect.h"
 #include "menu.h"
 
+#define MESSAGE_LENGTH 1024
+
 int main()
 {
 	int connection = connect();

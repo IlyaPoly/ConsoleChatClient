@@ -4,10 +4,10 @@
 #include <string.h>
 #define MESSAGE_LENGTH 1024
 
-void regChat(const int& connection);
+void regChat(char* message);
 void mainMenu(const int& connection, bool& in);
-void signIn(const int& connection, bool& in);
+void signIn(char* message);
 void signOut(bool& in);
-void writeMessage(const int& connection);
-void outInfo(const int& connection, const int& size);
+void writeMessage(char* message);
+void outInfo(const int& connection, char* message);
 void userMenu(const int& connection, bool& in);

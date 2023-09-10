@@ -1,0 +1,10 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/root/projects/ConsoleChatClientServer/server'
+g++ -g -c -pthread main.cpp
+g++ -g -c Chat.cpp
+g++ -g -c Message.cpp
+g++ -g -c User.cpp
+g++ -g -c Connect.cpp
+g++ -pthread main.o Chat.o Message.o User.o Connect.o -o consolechat
+make: Leaving directory '/root/projects/ConsoleChatClientServer/server'
+ 

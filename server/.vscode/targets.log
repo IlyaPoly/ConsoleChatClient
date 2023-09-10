@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Sep  7 16:49:15 2023
+# Make data base, printed on Sun Sep 10 15:28:06 2023
 
 # Variables
 
@@ -48,9 +48,8 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/0/bus
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
 VSCODE_CWD = /root
- 
 # environment
-SSH_CONNECTION = 62.217.185.122 54437 158.69.104.15 22
+SSH_CONNECTION = 213.87.146.232 12990 158.69.104.15 22
 # environment
 PATH = /root/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
@@ -58,7 +57,7 @@ XDG_RUNTIME_DIR = /run/user/0
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/0/vscode-ipc-3159af5c-513c-49e5-b468-15de622a5ad3.sock
+VSCODE_IPC_HOOK_CLI = /run/user/0/vscode-ipc-8ebca178-d07a-4778-b127-50df861fb489.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -98,7 +97,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 0
 # environment
-XDG_SESSION_ID = 1570
+XDG_SESSION_ID = 92
 # environment
 USER = root
 # makefile
@@ -118,9 +117,11 @@ MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_CLIENT = 62.217.185.122 54437 22
+SSH_CLIENT = 213.87.146.232 12990 22
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # environment
 BROWSER = /root/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/helpers/browser.sh
 # environment
@@ -146,7 +147,7 @@ LANG = C
 # environment
 MOTD_SHOWN = pam
 # variable set hash-table stats:
-# Load=67/1024=7%, Rehash=0, Collisions=9/95=9%
+# Load=68/1024=7%, Rehash=0, Collisions=9/96=9%
 
 # Pattern-specific Variable Values
 
@@ -188,7 +189,7 @@ Chat.cpp:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2023-09-07 12:54:34.174013499
+#  Last modified 2023-09-07 19:00:24.940722772
 #  File has been updated.
 #  Successfully updated.
 
@@ -205,24 +206,24 @@ Message.cpp:
 #  File has not been updated.
 
 # Not a target:
-Connect.h:
+main.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2023-09-10 15:19:54.253565174
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Connect.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-
-# Not a target:
-main.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2023-09-07 12:52:01.318167264
-#  File has been updated.
-#  Successfully updated.
 
 Chat.o: Chat.cpp
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 8):
-	g++ -c Chat.cpp
+	g++ -g -c Chat.cpp
 
 # Not a target:
 .DEFAULT:
@@ -232,7 +233,7 @@ Chat.o: Chat.cpp
 
 consolechat: main.o Chat.o Message.o User.o Connect.o
 #  Implicit rule search has not been done.
-#  Last modified 2023-09-07 16:14:55.636338934
+#  Last modified 2023-09-10 15:23:08.601198495
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -252,14 +253,14 @@ User.o: User.cpp
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 12):
-	g++ -c User.cpp
+	g++ -g -c User.cpp
 
 Message.o: Message.cpp
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 10):
-	g++ -c Message.cpp
+	g++ -g -c Message.cpp
 
 main.o: main.cpp
 #  Implicit rule search has not been done.
@@ -278,6 +279,7 @@ main.o: main.cpp
 # automatic
 # | := 
 # automatic
+ 
 # < := main.cpp
 # automatic
 # ^ := main.cpp
@@ -286,35 +288,29 @@ main.o: main.cpp
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 6):
-	g++ -c -pthread main.cpp
+	g++ -g -c -pthread main.cpp
 
-# Not a target:
-Connect.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-Connect.p: Connect.h
+Connect.o: Connect.cpp
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 14):
-	g++ -c Connect.h
+	g++ -g -c Connect.cpp
 
 # files hash-table stats:
-# Load=17/1024=2%, Rehash=0, Collisions=0/45=0%
+# Load=16/1024=2%, Rehash=0, Collisions=1/45=2%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 26 / storage = 231 B / avg = 8 B
-# current buf: size = 8162 B / used = 231 B / count = 26 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 25 / storage = 221 B / avg = 8 B
+# current buf: size = 8162 B / used = 221 B / count = 25 / avg = 8 B
 
-# strcache performance: lookups = 51 / hit rate = 49%
+# strcache performance: lookups = 51 / hit rate = 50%
 # hash-table stats:
-# Load=26/8192=0%, Rehash=0, Collisions=1/51=2%
-# Finished Make data base on Thu Sep  7 16:49:15 2023
+# Load=25/8192=0%, Rehash=0, Collisions=1/51=2%
+# Finished Make data base on Sun Sep 10 15:28:06 2023
 
  
