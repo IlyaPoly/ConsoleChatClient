@@ -16,7 +16,7 @@
 	read(connection, message, sizeof(message));
 	act = message[0];
 	strcpy(message,message+1);
-	switch (act)
+	switch (act - 48)
 	{
 		case 1:
 		{
