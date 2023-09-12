@@ -4,6 +4,7 @@
 #include <string.h>
 #define MESSAGE_LENGTH 1024
 
+
 void regChat(char* message);
 void mainMenu(const int& connection, bool& in);
 void signIn(char* message);

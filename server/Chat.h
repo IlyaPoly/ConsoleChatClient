@@ -11,10 +11,8 @@
 
 class Chat
 {
-	const std::string div = "*****************\n";
 	std::vector<User> users_;
 	std::vector<Message> messages_;
-	//std::shared_ptr<User> selectedUser_ = nullptr;
 	bool chatStatus_ = false;
 public:
 	void chatOn();
@@ -30,6 +28,6 @@ public:
 	void load(std::string file_path, std::vector<T>& mass);
 	template <typename T>
 	void upload(std::string file_path, std::vector<T>& mass);
-	void messToParam(std::string* param, const char* data);
+	void messToParam(std::string* param, const char* data, int countParam);
 	int getUsersSize();
 };

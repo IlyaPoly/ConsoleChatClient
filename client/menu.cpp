@@ -4,7 +4,7 @@
 void regChat(char* message)
 {
 	char buf[MESSAGE_LENGTH]{};
-	//std::system("clear");
+	std::system("clear");
 	std::cout << "Input your name : ";
 	std::cin >> buf;
 	strcat(message, buf);
@@ -50,13 +50,16 @@ void mainMenu(const int& connection, bool& in)
 	if (act == '2' && message[0] == '1')
 	in = true;
 	if (message[0] == '0')
+	{
 	strcpy(message,message+1);
 	std::cout << message << std::endl;
+	}
 }
 
 void signIn(char* message)
 {
 	char buf[MESSAGE_LENGTH]{};
+	std::system("clear");
 	std::cout << "Input your login: ";
 	std::cin >> buf;
 	strcat(message, buf);
@@ -72,7 +75,7 @@ in = false;
 void writeMessage(char* message)
 {
 	char buf[MESSAGE_LENGTH]{};
-	//std::system("clear");
+	std::system("clear");
 	std::cout << "Write login recipient or 'all' : ";
 	std::cin >> buf;
 	strcat(message, buf);
@@ -84,6 +87,7 @@ void writeMessage(char* message)
 }
 void outInfo(const int& connection, int act)
 {
+	std::system("clear");
 	int size=0;
 	char buf[MESSAGE_LENGTH]{};
 	char message[MESSAGE_LENGTH]{};
@@ -108,9 +112,10 @@ void outInfo(const int& connection, int act)
 }
 void userMenu(const int& connection, bool& in)
 {
+	const std::string div = "*****************\n";
 	char act;
 	char message[MESSAGE_LENGTH]{};
-	std::cout << "Choose an action:\n1 - Write message\n2 - Users list\n3 - Display chat\n0 - Sign out" << std::endl;
+	std::cout << div << "Choose an action:\n1 - Write message\n2 - Users list\n3 - Display chat\n0 - Sign out" << std::endl;
 	std::cin >> act;
 	act += 2;
 	message[0] = act;
@@ -134,6 +139,7 @@ void userMenu(const int& connection, bool& in)
 	}
 	case 5:
 	{
+		std::cout << "     Messages :" << std::endl;
 		outInfo(connection, act);
 		break;
 	}
@@ -141,12 +147,15 @@ void userMenu(const int& connection, bool& in)
 		std::cout << "Unknown command!" << std::endl;
 		return;
 	}
+	if (act != '4' && act != '5')
+	{
 	write(connection, message, sizeof(message));
 	read(connection, message, sizeof(message));
 	if (message[0] == '0')
 	{
-		strcat(message,message+1);
+		strcpy(message,message+1);
 		std::cout << "Wrong! " << message << std::endl;
+	}
 	}
 
 }
