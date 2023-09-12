@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Sep 11 21:32:26 2023
+# Make data base, printed on Mon Sep 11 21:32:59 2023
 
 # Variables
 
@@ -31,7 +31,7 @@ XDG_SESSION_TYPE = tty
 # default
 MAKE_VERSION := 4.2.1
 # makefile
-CURDIR := /root/projects/ConsoleChatClientServer/server
+CURDIR := /root/projects/ConsoleChatClientServer/client
 # makefile
 SHELL = /bin/sh
 # environment
@@ -57,7 +57,7 @@ XDG_RUNTIME_DIR = /run/user/0
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/0/vscode-ipc-fa8d26f1-4c21-4cad-971d-4bbeb5b6a702.sock
+VSCODE_IPC_HOOK_CLI = /run/user/0/vscode-ipc-2211e9a7-95c7-4b77-a694-ac09ec2212b4.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -65,7 +65,7 @@ LS_COLORS =
 # automatic
 %F = $(notdir $%)
 # environment
-PWD = /root/projects/ConsoleChatClientServer/server
+PWD = /root/projects/ConsoleChatClientServer/client
 # default
 .LOADED := 
 # automatic
@@ -147,7 +147,7 @@ LANG = C
 # environment
 MOTD_SHOWN = pam
 # variable set hash-table stats:
-# Load=68/1024=7%, Rehash=0, Collisions=9/93=10%
+# Load=68/1024=7%, Rehash=0, Collisions=9/96=9%
 
 # Pattern-specific Variable Values
 
@@ -155,9 +155,9 @@ MOTD_SHOWN = pam
 
 # Directories
 
-# . (device 64514, inode 295383): 19 files, no impossibilities.
+# . (device 64514, inode 295382): 13 files, no impossibilities.
 
-# 19 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -165,62 +165,57 @@ MOTD_SHOWN = pam
 
 # Files
 
-all: consolechat
+all: consolechatClient
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
 
 # Not a target:
-Chat.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2023-09-11 19:05:25.474372173
-#  File has been updated.
-#  Successfully updated.
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2023-09-07 19:00:24.940722772
-#  File has been updated.
-#  Successfully updated.
-
-# Not a target:
-User.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2023-09-07 12:52:01.318167264
-#  File has been updated.
-#  Successfully updated.
-
-# Not a target:
-Message.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2023-09-07 12:52:01.318167264
+#  Last modified 2023-09-11 14:29:45.97733456
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 main.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2023-09-11 19:00:15.27874989
-#  File has been updated.
-#  Successfully updated.
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
-Connect.cpp:
+connect.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2023-09-09 06:51:43.47482276
+#  Last modified 2023-09-10 14:47:54.036461272
 #  File has been updated.
 #  Successfully updated.
 
-Chat.o: Chat.cpp
+consolechatClient: connect.o menu.o main.o
 #  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:05:34.342361374
+#  Last modified 2023-09-11 18:56:45.855004869
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
+#  recipe to execute (from 'Makefile', line 4):
+	g++ connect.o menu.o main.o  -o consolechatClient
+
+# Not a target:
+menu.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2023-09-11 19:06:42.046318153
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 8):
-	g++ -g -c Chat.cpp
 
 # Not a target:
 .DEFAULT:
@@ -228,68 +223,69 @@ Chat.o: Chat.cpp
 #  Modification time never checked.
 #  File has not been updated.
 
-consolechat: main.o Chat.o Message.o User.o Connect.o
-#  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:05:34.506361174
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 4):
-	g++ -pthread main.o Chat.o Message.o User.o Connect.o -o consolechat
-
 clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 16):
-	rm -rf *.o
-
-User.o: User.cpp
-#  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:00:46.122712335
-#  File has been updated.
-#  Successfully updated.
 #  recipe to execute (from 'Makefile', line 12):
-	g++ -g -c User.cpp
-
-Message.o: Message.cpp
-#  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:00:45.738712803
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 10):
-	g++ -g -c Message.cpp
+	rm -rf *.o
 
 main.o: main.cpp
 #  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:00:44.422714404
-#  File has been updated.
-#  Successfully updated.
+#  Modification time never checked.
+#  File has not been updated.
 #  recipe to execute (from 'Makefile', line 6):
-	g++ -g -c -pthread main.cpp
+	g++ -g -c main.cpp
 
-Connect.o: Connect.cpp
+connect.o: connect.cpp
 #  Implicit rule search has not been done.
-#  Last modified 2023-09-11 19:00:46.158712291
+#  Last modified 2023-09-11 18:40:07.056221007
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 14):
-	g++ -g -c Connect.cpp
+#  recipe to execute (from 'Makefile', line 10):
+	g++ -g -c connect.cpp
+
+menu.o: menu.cpp
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  Last modified 2023-09-11 18:56:45.723005029
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := menu.o
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := menu.cpp
+# automatic
+# | := 
+# automatic
+# < := menu.cpp
+# automatic
+# ^ := menu.cpp
+# automatic
+# ? := menu.cpp
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from 'Makefile', line 8):
+	g++ -g -c menu.cpp
 
 # files hash-table stats:
-# Load=16/1024=2%, Rehash=0, Collisions=1/44=2%
+# Load=12/1024=1%, Rehash=0, Collisions=1/35=3%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
- 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 25 / storage = 221 B / avg = 8 B
-# current buf: size = 8162 B / used = 221 B / count = 25 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 19 / storage = 172 B / avg = 9 B
+# current buf: size = 8162 B / used = 172 B / count = 19 / avg = 9 B
 
-# strcache performance: lookups = 55 / hit rate = 54%
+# strcache performance: lookups = 42 / hit rate = 54%
 # hash-table stats:
-# Load=25/8192=0%, Rehash=0, Collisions=1/55=2%
-# Finished Make data base on Mon Sep 11 21:32:26 2023
+# Load=19/8192=0%, Rehash=0, Collisions=1/42=2%
+# Finished Make data base on Mon Sep 11 21:32:59 2023
 
  

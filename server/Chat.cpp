@@ -57,21 +57,21 @@ void Chat::regChat(const char* data, char* ans)
 			}
 		}
 	}while (allow!=users_.size());
-	if (!users_.empty() || allow == users_.size())
+	if (users_.empty() || allow == users_.size())
 	{
 		users_.push_back(User(userParam[0], userParam[1], userParam[2]));
 		ans[0] = '1';
 	}
 	else 
-	ans = "0Login is busi!";
+	strcpy(ans, "0Login is busi!");
 }
 
 void Chat::signIn(const char* data, char* ans, std::shared_ptr<User>& selectedUser_)
 {
-	std::string userParam[3] = {};
+	std::string userParam[2] = {};
 	if (users_.empty())
 	{
-		ans = 0;
+		strcpy(ans, "0Register users not found!");
 		return;
 	}
 	messToParam(userParam, data);
@@ -94,7 +94,8 @@ void Chat::signIn(const char* data, char* ans, std::shared_ptr<User>& selectedUs
 			ans[0] = '1';
 		}
 	}
-	else ans = "Wrong login/pass!";
+	if (selectedUser_ == nullptr)
+	strcpy(ans, "0Wrong login/pass!");
 }
 
 void Chat::writeMessage(const char* data, char* ans, std::shared_ptr<User>& selectedUser_)
@@ -116,11 +117,13 @@ void Chat::writeMessage(const char* data, char* ans, std::shared_ptr<User>& sele
 		messages_.push_back(Message(mess[0], selectedUser_->getLogin(), mess[1], selectedUser_->getName()));
 		ans[0] = '1';
 	}
-	else ans = "Recipient is not found!";	
+	else 
+	strcpy(ans, "0Recipient is not found!");
 }
 
 void Chat::usersList(const int& connection, std::shared_ptr<User>& selectedUser_)
 {
+	const char end[] = "!!END!!";
 	char buf[MESSAGE_LENGTH]{};
 	char message[MESSAGE_LENGTH]{};
 	for (auto& user : users_)
@@ -131,14 +134,22 @@ void Chat::usersList(const int& connection, std::shared_ptr<User>& selectedUser_
 		strcat(message, user.getLogin().c_str());
 		strcat(message, "' ");
 		strcat(message, buf);
-		write(connection, message, sizeof(message));
+		bzero(buf, sizeof(buf));
+		buf[0] = strlen(message);
+		strcat(buf, message);
+		write(connection, buf, sizeof(buf));
 	}
-	write(connection, "!!END!!", sizeof("!!END!!"));
+	bzero(buf, sizeof(buf));
+	buf[0] = strlen(end);
+	strcat(buf, end);
+	write(connection, buf , sizeof(buf));
 }
 
 void Chat::dispChat(const int& connection, std::shared_ptr<User>& selectedUser_)
 {
 	char message[MESSAGE_LENGTH]{};
+	char buf[MESSAGE_LENGTH]{};
+	const char end[] = "!!END!!";
 	for (auto& messages : messages_)
 	{
 		if ((selectedUser_->getLogin() == messages.getFrom() || selectedUser_->getLogin() == messages.getTo() || messages.getTo() == "all"))
@@ -150,10 +161,16 @@ void Chat::dispChat(const int& connection, std::shared_ptr<User>& selectedUser_)
 			strcat(message, messages.getTo().c_str());
 			strcat(message, "\nText : ");
 			strcat(message, messages.getText().c_str());
-			write(connection, message, sizeof(message));
+			bzero(buf, sizeof(buf));
+			buf[0] = strlen(message);
+			strcat(buf, message);
+			write(connection, buf, sizeof(buf));
 		}
 	}
-	write(connection, "!!END!!", sizeof("!!END!!"));
+	bzero(buf, sizeof(buf));
+	buf[0] = strlen(end);
+	strcat(buf, end);
+	write(connection, buf , sizeof(buf));
 }
 
 template<typename T>

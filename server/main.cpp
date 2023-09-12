@@ -9,10 +9,12 @@
 
  void work(const int connection, Chat& chat)
  {
-    char message[MESSAGE_LENGTH];
+    char message[MESSAGE_LENGTH]{};
 	char act;
 	char ans[MESSAGE_LENGTH]{};
     std::shared_ptr<User> selectedUser_ = nullptr;
+	while(1)
+	{
 	read(connection, message, sizeof(message));
 	act = message[0];
 	strcpy(message,message+1);
@@ -45,15 +47,21 @@
 		}
 		case 0:
 		{
-			selectedUser_ = nullptr;
-			ans[0] = '1';
-			break;
+			if (selectedUser_)
+			{
+				selectedUser_ = nullptr;
+				ans[0] = '1';
+				break;
+			} else return;
 		}
 		default:
 			break;
-		write(connection, &ans, sizeof(ans));
 		}
-     
+		if (act != '4' && act != '5')
+		write(connection, ans, sizeof(ans));
+		bzero(message, sizeof(message));
+		bzero(ans, sizeof(ans));
+	}
  }
 
 void con(Chat& chat)
