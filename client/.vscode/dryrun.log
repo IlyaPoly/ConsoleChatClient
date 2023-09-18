@@ -1,8 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/root/projects/ConsoleChatClientServer/client'
-g++ -g -c connect.cpp
-g++ -g -c menu.cpp
-g++ -g -c main.cpp
-g++ connect.o menu.o main.o  -o consolechatClient
-make: Leaving directory '/root/projects/ConsoleChatClientServer/client'
- 
