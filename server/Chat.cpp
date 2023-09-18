@@ -203,4 +203,4 @@ void Chat::upload(std::string file_path, std::vector<T>& mass)
 int Chat::getUsersSize()
 {
 	return users_.size();
-}
+};
