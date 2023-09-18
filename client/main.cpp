@@ -3,7 +3,7 @@
 
 #define MESSAGE_LENGTH 1024
 
-int main()
+int  main(int argc, char* argv[])
 {
 	int connection = connect();
 	bool in = false;
