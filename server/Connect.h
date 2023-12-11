@@ -19,7 +19,7 @@ public:
     {
         sockert_file_descriptor = socket(AF_INET, SOCK_STREAM, 0);
         serveraddress.sin_addr.s_addr = htonl(INADDR_ANY);
-        serveraddress.sin_port = htons(PORT);
+        serveraddress.sin_port = htons(PORT2);
         serveraddress.sin_family = AF_INET;
     
     }

@@ -9,7 +9,7 @@ int connect()
         exit(1);
     }
 
-    serveraddress.sin_addr.s_addr = inet_addr("158.69.104.15");
+    serveraddress.sin_addr.s_addr = inet_addr("127.0.0.1");
     serveraddress.sin_port = htons(PORT);
     serveraddress.sin_family = AF_INET;
     connection = connect(socket_file_descriptor, (struct sockaddr*)&serveraddress, sizeof(serveraddress));

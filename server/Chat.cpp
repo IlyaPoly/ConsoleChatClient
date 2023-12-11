@@ -4,7 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <vector>
-
+#include <libpq-fe.h>
+#include <cstdio>
 
 void Chat::chatOn()
 {
@@ -34,99 +35,110 @@ void Chat::messToParam(std::string* param, const char* data, int countParam)
 	}
 }
 
-void Chat::regChat(const char* data, char* ans)
+void Chat::regChat(const char* data, char* ans, PGconn *conn, PGresult *res)
 {
 	std::string userParam[3] = {};
 	messToParam(userParam, data, 3);
-	auto allow = 0;
-	 do{
-		for (auto& user : users_)
-		{
-			if (userParam[1] == user.getLogin())
-			{
-				strcpy(ans, "0Login is busi!");
-				return;
-			}
-			else
-			{
-				allow ++;
-			}
-		}
-	}while (allow!=users_.size());
-	if (users_.empty() || allow == users_.size())
+	char snd[1000] = {};
+	std::string tmp = "SELECT * FROM client WHERE login = '" + userParam[1] + "'";
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	int nrows = PQntuples(res);
+	if (nrows > 0)
 	{
-		users_.push_back(User(userParam[0], userParam[1], userParam[2]));
+		strcpy(ans, "0Login is busy!");
+		return;
+	} else 
+	{
+		tmp = "INSERT INTO public.client (login,firstname,lastname,email) VALUES ('" +  userParam[1] + "','" + userParam[0] + "',NULL,NULL);" 
+		"UPDATE public.client_save set pass ='" + userParam[2] + "' where public.client_save.client_id = (select id from public.client where login ='" + userParam[1] + "');";
+		strcpy(snd, tmp.c_str());
+		PQexec(conn, snd);
 		ans[0] = '1';
 	}
 	
 }
 
-void Chat::signIn(const char* data, char* ans, std::shared_ptr<User>& selectedUser_)
+void Chat::signIn(const char* data, char* ans, char *id, PGconn *conn, PGresult *res)
 {
 	std::string userParam[2] = {};
-	if (users_.empty())
+	messToParam(userParam, data, 2);
+	std::string tmp = "SELECT * FROM client;";
+	char snd[1000] = {};
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	int nrows = PQntuples(res);
+	if (nrows <= 1)
 	{
 		strcpy(ans, "0Register users not found!");
 		return;
 	}
-	messToParam(userParam, data, 2);
 	bool allow = false;
 	int buf = 0;
-	for (auto& user : users_)
+	tmp = "SELECT id, login FROM client WHERE login = '" + userParam[0] + "' and id ="
+	" (select client_id from public.client_save where pass = '" + userParam[1] + "'and client_id = id)";
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	nrows = PQntuples(res);
+	if (nrows > 0)
 	{
-		if (userParam[0] == user.getLogin())
-		{
-			allow = true;
-			break;
-		}
-		buf++;
-	}
-	if (allow)
-	{
-		if (userParam[1] == users_[buf].getPass())
-		{
-			selectedUser_ = std::make_shared<User>(users_[buf]);
-			ans[0] = '1';
-		}
-	}
-	if (selectedUser_ == nullptr)
+		ans[0] = '1';
+		strcpy(id, PQgetvalue(res, 0, 0));
+	} else
 	strcpy(ans, "0Wrong login/pass!");
 }
 
-void Chat::writeMessage(const char* data, char* ans, std::shared_ptr<User>& selectedUser_)
+void Chat::writeMessage(const char* data, char* ans, char *id, PGconn *conn, PGresult *res)
 {
 	std::string mess[2] = {};
 	messToParam(mess, data, 2);
 	char allow = '1';
 	bool find = false;
-	for (auto& user : users_)
+	char *id_rec = {};
+	std::string t1,t2;
+	char snd[1000] = {};
+	std::string tmp = "SELECT * FROM public.client WHERE login = '" + mess[0] + "'";
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	int nrows = PQntuples(res);
+	if (nrows > 0 && mess[0] != "all")
 	{
-		if (mess[0] == user.getLogin())
-		{
-			find = true;
-			break;
-		}
+		find = true;
+		id_rec = PQgetvalue(res, 0, 0);
 	}
-	if (mess[0] != selectedUser_->getLogin() && (find || mess[0] == "all"))
+	if (id_rec != id && (find || mess[0] == "all"))
 	{
-		messages_.push_back(Message(mess[0], selectedUser_->getLogin(), mess[1], selectedUser_->getName()));
+		t1 = id;
+		if (mess[0] == "all")
+			t2 = "2";
+		else
+			t2 = id_rec;
+		tmp = "insert into public.chat (id_sender, id_recipient) values ('" + t1 + "','" + t2 + "'); "
+		"insert into public.message (chat_id, message) values (currval('chat_id_seq'::regclass), '" + mess[1] + "');";
+		strcpy(snd, tmp.c_str());
+		res = PQexec(conn, snd);
 		ans[0] = '1';
 	}
 	else 
 	strcpy(ans, "0Recipient is not found!");
 }
 
-void Chat::usersList(const int& connection, std::shared_ptr<User>& selectedUser_)
+void Chat::usersList(const int& connection, char *id, PGconn *conn, PGresult *res)
 {
 	const char end[] = "!!END!!";
 	char buf[MESSAGE_LENGTH]{};
 	char message[MESSAGE_LENGTH]{};
-	for (auto& user : users_)
+	char snd[1000] = {};
+	std::string tmp = "SELECT * FROM public.client";
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	int nrows = PQntuples(res);
+	for (auto i = 1; i < nrows; i++)
 	{
-		if (user.getLogin() == selectedUser_->getLogin())
+		if (PQgetvalue(res, i, 0) == id)
 			strcpy(buf, " (this account)");
 		strcpy(message, "Login : '");
-		strcat(message, user.getLogin().c_str());
+		strcat(message, PQgetvalue(res, i, 1));
 		strcat(message, "' ");
 		strcat(message, buf);
 		bzero(buf, sizeof(buf));
@@ -141,66 +153,40 @@ void Chat::usersList(const int& connection, std::shared_ptr<User>& selectedUser_
 	write(connection, buf , sizeof(buf));
 }
 
-void Chat::dispChat(const int& connection, std::shared_ptr<User>& selectedUser_)
+void Chat::dispChat(const int& connection, char *id, PGconn *conn, PGresult *res)
 {
 	char message[MESSAGE_LENGTH]{};
 	char buf[MESSAGE_LENGTH]{};
 	const char end[] = "!!END!!";
-	for (auto& messages : messages_)
+	char snd[1000] = {};
+	std::string t1;
+	t1 = id;
+	std::string tmp = "select id_sender, id_recipient, message  from public.message left join chat on (chat_id = id)"
+	"where (id_recipient = '"+ t1 + "' or id_sender = '"+ t1 + "' or id_recipient = '2')";
+	strcpy(snd, tmp.c_str());
+	res = PQexec(conn, snd);
+	int nrows = PQntuples(res);
+	for (auto i = 0; i < nrows; i++)
 	{
-		if ((selectedUser_->getLogin() == messages.getFrom() || selectedUser_->getLogin() == messages.getTo() || messages.getTo() == "all"))
-		{
 			strcpy(message, "From : ");
-			strcat(message, messages.getFromPname().c_str());
+			t1 = PQgetvalue(res, i, 0);
+			tmp = "select login from client where id ='" + t1 + "';";
+			strcpy(snd, tmp.c_str());
+			strcat(message, PQgetvalue(PQexec(conn, snd),0,0));
 			strcat(message, "\nTo : ");
-			strcat(message, messages.getTo().c_str());
+			t1 = PQgetvalue(res, i, 1);
+			tmp = "select login from client where id ='" + t1 + "';";
+			strcpy(snd, tmp.c_str());
+			strcat(message, PQgetvalue(PQexec(conn, snd),0,0));
 			strcat(message, "\nText : ");
-			strcat(message, messages.getText().c_str());
+			strcat(message, PQgetvalue(res, i, 2));
 			bzero(buf, sizeof(buf));
 			buf[0] = strlen(message);
 			strcat(buf, message);
 			write(connection, buf, sizeof(buf));
-			
-		}
 	}
 	bzero(buf, sizeof(buf));
 	buf[0] = strlen(end);
 	strcat(buf, end);
 	write(connection, buf , sizeof(buf));
 }
-
-template<typename T>
-inline void Chat::load(std::string file_path, std::vector<T>& mass)
-{
-	std::fstream file = std::fstream(file_path, std::ios::in);
-	if (!file)
-	{
-		std::cout << "Download from the file cannot be finished, file not found!";
-		return;
-	}
-	file.seekg(0, std::ios_base::beg);
-	while (!file.eof())
-	{
-		if (!file.eof())
-		mass.push_back(T());
-		file >> mass.back();
-	}
-	file.close();
-}
-
-template<class T>
-void Chat::upload(std::string file_path, std::vector<T>& mass)
-{
-	std::fstream file = std::fstream(file_path, std::ios::out | std::ios::trunc);
-		if (!file)
-			std::cout << "Download from the file cannot be finished, file not found!";
-		file.seekg(0, std::ios_base::beg);
-		for (auto& i : mass)
-		{
-			file << i;
-		}
-}
-int Chat::getUsersSize()
-{
-	return users_.size();
-};
